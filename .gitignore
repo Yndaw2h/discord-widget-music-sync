@@ -1,0 +1,4 @@
+.env
+.cache
+music_history.db
+__pycache__/
