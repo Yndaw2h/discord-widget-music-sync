@@ -1,4 +1,5 @@
 .env
 .cache
+.last_asset_key
 music_history.db
 __pycache__/

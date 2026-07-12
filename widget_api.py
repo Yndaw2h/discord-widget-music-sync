@@ -14,7 +14,11 @@ DEFAULT_COVER_ASSET = os.getenv('DEFAULT_COVER_ASSET', 'OIP-2651408762')
 URL = f'https://discord.com/api/v9/applications/{APPLICATION_ID}/widget-configs/{CONFIG_ID}'
 HEADERS = {'Authorization': USER_TOKEN, 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
+CACHE_FILE = os.path.join(os.path.dirname(__file__), '.last_asset_key')
 last_asset_key = None
+if os.path.exists(CACHE_FILE):
+    with open(CACHE_FILE, 'r') as f:
+        last_asset_key = f.read().strip()
 
 def update_cover_asset(cover_url: str) -> str:
     global last_asset_key
@@ -52,6 +56,11 @@ def update_cover_asset(cover_url: str) -> str:
             except Exception:
                 pass
         last_asset_key = asset_name
+        try:
+            with open(CACHE_FILE, 'w') as f:
+                f.write(last_asset_key)
+        except Exception:
+            pass
 
         return asset_name
     except Exception as e:
