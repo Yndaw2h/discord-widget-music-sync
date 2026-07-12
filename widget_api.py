@@ -14,7 +14,10 @@ DEFAULT_COVER_ASSET = os.getenv('DEFAULT_COVER_ASSET', 'OIP-2651408762')
 URL = f'https://discord.com/api/v9/applications/{APPLICATION_ID}/widget-configs/{CONFIG_ID}'
 HEADERS = {'Authorization': USER_TOKEN, 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
+last_asset_key = None
+
 def update_cover_asset(cover_url: str) -> str:
+    global last_asset_key
     if not cover_url:
         return DEFAULT_COVER_ASSET
     try:
@@ -22,7 +25,6 @@ def update_cover_asset(cover_url: str) -> str:
         req = urllib.request.Request(cover_url, headers={'User-Agent': 'Mozilla/5.0'})
         with urllib.request.urlopen(req) as response:
             image_bytes = response.read()
-        print('[*] Managing Discord assets...')
         assets_url = f'https://discord.com/api/v9/applications/{APPLICATION_ID}/assets'
         upload_req_url = f'{assets_url}/upload'
         upload_req_payload = {'filename': 'cover.jpg', 'file_size': len(image_bytes)}
@@ -41,21 +43,21 @@ def update_cover_asset(cover_url: str) -> str:
         req3 = urllib.request.Request(assets_url, data=json.dumps(register_payload).encode('utf-8'), headers=HEADERS, method='POST')
         with urllib.request.urlopen(req3) as res3:
             final_asset = json.loads(res3.read().decode())
-            print(f"[+] Successfully registered asset: {asset_name} (ID: {final_asset.get('asset_id')})")
-        try:
-            req_list = urllib.request.Request(assets_url, headers=HEADERS)
-            with urllib.request.urlopen(req_list) as res_list:
-                assets = json.loads(res_list.read().decode())
-                for asset in assets:
-                    if asset.get('key', '').startswith('cover_') and asset.get('key') != asset_name:
-                        del_url = f"{assets_url}/{asset['asset_id']}"
-                        del_req = urllib.request.Request(del_url, headers=HEADERS, method='DELETE')
-                        urllib.request.urlopen(del_req)
-        except Exception as e:
-            print(f'[*] Minor cleanup warning: {e}')
+            current_asset_id = final_asset.get('asset_id')
+            print(f"[+] Successfully registered asset: {asset_name} (ID: {current_asset_id})")
+
+        if last_asset_key:
+            try:
+                requests.delete(f"{assets_url}/{last_asset_key}", headers=HEADERS, timeout=5)
+            except Exception:
+                pass
+        last_asset_key = asset_name
+
         return asset_name
     except Exception as e:
         print(f'[!] Failed to upload album cover: {e}')
+        if hasattr(e, 'read'):
+            print(f'Response Body: {e.read().decode()}')
         return DEFAULT_COVER_ASSET
 
 def update_music_widget(song_name: str, artist_name: str, album_name: str, listening_streak: int, top_song: str, total_tracks: int, total_hours: float, cover_url: str=''):
