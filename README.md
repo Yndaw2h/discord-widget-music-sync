@@ -77,8 +77,6 @@ When setting up the widget for your application in the **Discord Developer Porta
 > [!CAUTION]
 > **MASSIVE SECURITY WARNING:** Your User Token is the absolute master key to your entire Discord account. Do **NOT** share this with anyone, do **NOT** upload your `.env` file to GitHub, and do **NOT** show it on screen. If someone gets this token, they have full, unrestricted access to your account and can do whatever they want.
 
-*Disclaimer: Automating a user account is against Discord's Terms of Service. Use this at your own risk.*
-
 You can grab all three required Discord variables (`DISCORD_APPLICATION_ID`, `DISCORD_CONFIG_ID`, and `DISCORD_USER_TOKEN`) at the exact same time directly from the Developer Portal!
 1. While still on the Developer Portal page where you configured the widget schema, open your browser's Developer Tools (usually `F12` or `Ctrl + Shift + I`) and go to the **Network** tab.
 2. **BEFORE** clicking the button to save the widget, filter the Network tab for `/widget-configs`.
