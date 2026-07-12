@@ -51,6 +51,8 @@ Open `.env` and fill in the values:
 3. Add `https://open.spotify.com/` as a Redirect URI in the app settings.
 4. Copy the **Client ID** and **Client Secret** to your `.env` file.
 
+
+
 #### Discord Widgets Setup
 *Disclaimer: Discord Widgets is an experimental feature. You need to enable Developer Experiments in your Discord client to access it.*
 
@@ -71,16 +73,20 @@ When setting up the widget for your application in the **Discord Developer Porta
 | Widget Bottom | Stats Grid | Stat 1-6 Label | Text | Custom String |
 | Add Widget Preview | Hero | Hero Image | — | Application Asset |
 
-**Finding your Application ID & Config ID:**
-Your `DISCORD_APPLICATION_ID` can be found in the Discord Developer Portal under the **General Information** tab for your app.
+**Finding your Discord IDs and User Token:**
+> [!CAUTION]
+> **MASSIVE SECURITY WARNING:** Your User Token is the absolute master key to your entire Discord account. Do **NOT** share this with anyone, do **NOT** upload your `.env` file to GitHub, and do **NOT** show it on screen. If someone gets this token, they have full, unrestricted access to your account and can do whatever they want.
 
-You can grab the `DISCORD_CONFIG_ID` directly from the Developer Portal while you are setting up the widget schema above! You do not need to go into your Discord client:
-1. While still on the Developer Portal page where you configured the widget, open your browser's Developer Tools (usually `F12` or `Ctrl + Shift + I`) and go to the **Network** tab.
+*Disclaimer: Automating a user account is against Discord's Terms of Service. Use this at your own risk.*
+
+You can grab all three required Discord variables (`DISCORD_APPLICATION_ID`, `DISCORD_CONFIG_ID`, and `DISCORD_USER_TOKEN`) at the exact same time directly from the Developer Portal!
+1. While still on the Developer Portal page where you configured the widget schema, open your browser's Developer Tools (usually `F12` or `Ctrl + Shift + I`) and go to the **Network** tab.
 2. **BEFORE** clicking the button to save the widget, filter the Network tab for `/widget-configs`.
 3. Hit the save button on the Developer Portal page.
-4. Look for the request that appears (usually a `POST` or `PATCH` request) and click on it.
-5. Under the **Headers** tab, look at the **Request URL**. The very last sequence of numbers in that link is your Widget Config ID! *(Note: Your Application ID is also visible right before it in the URL).*
-6. Copy both IDs and paste them into your `.env` file.
+4. Look for the `/widget-configs` request that pops up and click on it.
+5. Under the **Headers** tab, look at the **Request URL**. The sequence of numbers right before `/widget-configs/` is your `DISCORD_APPLICATION_ID`, and the very last sequence of numbers at the end of the URL is your `DISCORD_CONFIG_ID`.
+6. Scroll down to the **Request Headers** section and look for the `Authorization` header. That long value is your `DISCORD_USER_TOKEN`.
+7. Copy all three values and paste them into your `.env` file.
 
 
 ### 4. Running the Script
