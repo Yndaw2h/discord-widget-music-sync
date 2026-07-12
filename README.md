@@ -36,7 +36,11 @@ pip install -r requirements.txt
 ### 3. Environment Variables
 Copy `.env.example` to a new file named `.env`:
 ```bash
+# Mac/Linux
 cp .env.example .env
+
+# Windows
+copy .env.example .env
 ```
 
 Open `.env` and fill in the values:
