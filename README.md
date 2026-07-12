@@ -86,6 +86,16 @@ You can grab all three required Discord variables (`DISCORD_APPLICATION_ID`, `DI
 6. Scroll down to the **Request Headers** section and look for the `Authorization` header. That long value is your `DISCORD_USER_TOKEN`.
 7. Copy all three values and paste them into your `.env` file.
 
+#### Fallback Cover Image (Optional)
+If you play a Local File or a song without an album cover, the script physically cannot update the Discord widget without an image because Discord's strict backend validation requires all schema fields to be satisfied. 
+If you want the script to still update your stats when listening to songs with missing covers:
+1. While still setting up your widget schema in the Developer Portal, click the button to add an asset directly on the **Widget Top > Content > Image** component.
+2. Upload your fallback image (like a generic album cover or a transparent image) right there.
+3. Once uploaded, grab the name of that newly uploaded image asset.
+4. Add it to your `.env` file: `DEFAULT_COVER_ASSET=your_fallback_asset_name`
+
+*If you leave this blank, the script will safely ignore songs with missing covers to prevent the API from crashing.*
+
 
 ### 4. Running the Script
 

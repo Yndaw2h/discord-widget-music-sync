@@ -10,7 +10,7 @@ load_dotenv(os.path.join(os.path.dirname(__file__), '.env'))
 USER_TOKEN = os.getenv('DISCORD_USER_TOKEN')
 APPLICATION_ID = os.getenv('DISCORD_APPLICATION_ID')
 CONFIG_ID = os.getenv('DISCORD_CONFIG_ID')
-DEFAULT_COVER_ASSET = os.getenv('DEFAULT_COVER_ASSET', 'OIP-2651408762')
+DEFAULT_COVER_ASSET = os.getenv('DEFAULT_COVER_ASSET')
 URL = f'https://discord.com/api/v9/applications/{APPLICATION_ID}/widget-configs/{CONFIG_ID}'
 HEADERS = {'Authorization': USER_TOKEN, 'Content-Type': 'application/json', 'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36'}
 
@@ -71,7 +71,13 @@ def update_cover_asset(cover_url: str) -> str:
 
 def update_music_widget(song_name: str, artist_name: str, album_name: str, listening_streak: int, top_song: str, total_tracks: int, total_hours: float, cover_url: str=''):
     asset_id = update_cover_asset(cover_url)
+    
+    if not asset_id:
+        print(f"[!] Skipping widget update for '{song_name}': No cover available and DEFAULT_COVER_ASSET is not set in .env")
+        return False
+
     payload = {'surfaces': {'widget_top': {'layout': 'widget_top_hero', 'components': {'hero_image': {'fields': {'image': {'presentation_type': 'image', 'value_type': 'application_asset', 'value': asset_id}}}, 'title': {'fields': {'text': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': song_name}}}}}, 'widget_bottom': {'layout': 'widget_bottom_stats', 'components': {'stat_1': {'fields': {'label': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': artist_name}, 'value': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': 'Artist'}}}, 'stat_2': {'fields': {'label': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': album_name}, 'value': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': 'Album'}}}, 'stat_3': {'fields': {'label': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': str(listening_streak)}, 'value': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': 'Day Streak'}}}, 'stat_4': {'fields': {'label': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': top_song}, 'value': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': 'Top Song'}}}, 'stat_5': {'fields': {'label': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': str(total_tracks)}, 'value': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': 'Total Plays'}}}, 'stat_6': {'fields': {'label': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': str(total_hours)}, 'value': {'presentation_type': 'text', 'value_type': 'custom_string', 'value': 'Total Hours'}}}}}, 'add_widget_preview': {'layout': 'add_widget_preview_hero', 'components': {'hero_image': {'fields': {'image': {'presentation_type': 'image', 'value_type': 'application_asset', 'value': asset_id}}}}}}}
+
     for i in range(10):
         try:
             response = requests.patch(URL, headers=HEADERS, json=payload)
@@ -95,4 +101,4 @@ def update_music_widget(song_name: str, artist_name: str, album_name: str, liste
             return False
     print('[!] Exceeded maximum retries waiting for Discord CDN.')
     return False
-
+
