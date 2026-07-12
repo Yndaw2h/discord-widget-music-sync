@@ -63,22 +63,13 @@ Alternatively, if you prefer a written guide:
 **Configuring the Widget in Developer Portal:**
 When setting up the widget for your application in the **Discord Developer Portal**, you must map the schema exactly as follows so the script can inject the Spotify data correctly:
 
-### 1. Widget Top
-- **Design:** Hero
-- **Content > Image:** Set *Value Type* to `Application Asset`
-- **Content > Title:** 
-  - Set *Presentation Type* to `Text`
-  - Set *Value Type* to `Custom String`
-
-### 2. Widget Bottom
-- **Design:** Stats Grid
-- **Stats (1 through 6):** 
-  - For **Value**: Set *Presentation Type* to `Text` and *Value Type* to `Custom String`
-  - For **Label**: Set *Value Type* to `Custom String`
-
-### 3. Add Widget Preview
-- **Design:** Hero
-- **Content > Hero Image:** Set *Value Type* to `Application Asset`
+| Section | Design | Field | Presentation Type | Value Type |
+| :--- | :--- | :--- | :--- | :--- |
+| Widget Top | Hero | Image | — | Application Asset |
+| Widget Top | Hero | Title | Text | Custom String |
+| Widget Bottom | Stats Grid | Stat 1-6 Value | Text | Custom String |
+| Widget Bottom | Stats Grid | Stat 1-6 Label | Text | Custom String |
+| Add Widget Preview | Hero | Hero Image | — | Application Asset |
 
 **Finding your `DISCORD_CONFIG_ID`:**
 You can grab the Config ID directly from the Developer Portal while you are setting up the widget schema above! You do not need to go into your Discord client:
