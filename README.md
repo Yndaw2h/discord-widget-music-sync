@@ -56,6 +56,35 @@ For a detailed video guide on how to enable Developer Experiments, I highly reco
 Alternatively, if you prefer a written guide:
 [Full setup guide for enabling Developer Experiments and configuring your app](https://chloecinders.com/blog/discord-widgets#setting-up-your-application-and-developer-portal)
 
+**Configuring the Widget in Developer Portal:**
+When setting up the widget for your application in the **Discord Developer Portal**, you must map the schema exactly as follows so the script can inject the Spotify data correctly:
+
+### 1. Widget Top
+- **Design:** Hero
+- **Content > Image:** Set *Value Type* to `Application Asset`
+- **Content > Title:** 
+  - Set *Presentation Type* to `Text`
+  - Set *Value Type* to `Custom String`
+
+### 2. Widget Bottom
+- **Design:** Stats Grid
+- **Stats (1 through 6):** 
+  - For **Value**: Set *Presentation Type* to `Text` and *Value Type* to `Custom String`
+  - For **Label**: Set *Value Type* to `Custom String`
+
+### 3. Add Widget Preview
+- **Design:** Hero
+- **Content > Hero Image:** Set *Value Type* to `Application Asset`
+
+**Finding your `DISCORD_CONFIG_ID`:**
+You can grab the Config ID directly from the Developer Portal while you are setting up the widget schema above! You do not need to go into your Discord client:
+1. While still on the Developer Portal page where you configured the widget, open your browser's Developer Tools (usually `F12` or `Ctrl + Shift + I`) and go to the **Network** tab.
+2. **BEFORE** clicking the button to save the widget, filter the Network tab for `/widget-configs`.
+3. Hit the save button on the Developer Portal page.
+4. Look for the request that appears (usually a `POST` or `PATCH` request) and click on it.
+5. Under the **Headers** tab, look at the **Request URL**. The very last sequence of numbers in that link is your Widget Config ID!
+6. Copy those numbers and paste them into your `.env` file.
+
 
 ### 4. Running the Script
 
