@@ -21,7 +21,7 @@ It also keeps a local SQLite database of your listening history to display stats
 
 ### 1. Requirements
 - Python 3.8+
-- A Spotify account (Premium recommended, but works with free)
+- A Spotify account (Premium required — Spotify's Web API gates playback endpoints behind Premium)
 - A Discord account with the "Widgets" feature enabled (currently requires enabling Developer Experiments in Discord to see the UI).
 
 ### 2. Installation
